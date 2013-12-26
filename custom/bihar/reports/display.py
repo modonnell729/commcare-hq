@@ -93,8 +93,10 @@ class MCHDisplay(CaseDisplay):
     def parse_date(self, date_string):
         if date_string != EMPTY_FIELD and date_string != '' and date_string is not None:
             try:
-                return self.report.date_to_json(CaseDisplay.parse_date(self, date_string))
+                return str(self.report.date_to_json(CaseDisplay.parse_date(self, date_string)))
             except AttributeError:
+                return _("Bad date format!")
+            except TypeError:
                 return _("Bad date format!")
         else:
             return EMPTY_FIELD
@@ -110,7 +112,7 @@ class MCHMotherDisplay(MCHDisplay):
         jsy_money = None
 
         for form in forms:
-            form_dict = form.get_form
+            form_dict = form.form
             form_xmlns = form_dict["@xmlns"]
 
             if NEW in form_xmlns:
@@ -449,7 +451,7 @@ class MCHChildDisplay(MCHDisplay):
                     setattr(self, "_mobile_number_whose", number)
 
                 for form in forms:
-                    form_dict = form.get_form
+                    form_dict = form.form
                     form_xmlns = form_dict["@xmlns"]
 
                     if NEW in form_xmlns:
