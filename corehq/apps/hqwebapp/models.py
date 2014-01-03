@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe, mark_for_escaping
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_noop
+from corehq.apps.accounting.dispatcher import AccountingAdminInterfaceDispatcher
 from corehq.apps.domain.utils import get_adm_enabled_domains
 from corehq.apps.indicators.dispatcher import IndicatorAdminInterfaceDispatcher
 from corehq.apps.indicators.utils import get_indicator_domains
@@ -991,8 +992,9 @@ class BillingTab(UITab):
 
 class AccountingTab(UITab):
     title = ugettext_noop("Accounting")
-    view = "view_billing_accounts"
-
+    view = "accounting_default"#"corehq.apps.accounting.views.accounting_default"#
+    dispatcher = AccountingAdminInterfaceDispatcher
+    '''
     @property
     def sidebar_items(self):
         return [
@@ -1001,7 +1003,7 @@ class AccountingTab(UITab):
                  'url': reverse('view_billing_accounts'),},
             ]),
         ]
-
+    '''
     @property
     def is_viewable(self):
         return self.couch_user and self.couch_user.is_superuser
